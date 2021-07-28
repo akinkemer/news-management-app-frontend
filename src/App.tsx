@@ -1,25 +1,27 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import Footer from "./layout/Footer";
+import Navbar from "./layout/Navbar";
+import MainPage from "./pages/MainPage";
+import NotFoundErrorPage from "./pages/NotFoundErrorPage";
+
+import PrivateRoute from "./components/PrivateRoute";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import SignInPage from "./pages/SignInPage";
+import RegisterPage from "./pages/RegisterPage";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Navbar />
+      <div className="container">
+        <Switch>
+          <Route exact path="/" component={MainPage} />
+          <Route exact path="/signIn" component={SignInPage} />
+          <Route exact path="/register" component={RegisterPage} />
+          <Route component={NotFoundErrorPage} />
+        </Switch>
+      </div>
+      <Footer />
+    </Router>
   );
 }
 
