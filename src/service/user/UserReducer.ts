@@ -1,38 +1,34 @@
 import * as Types from "./ActionTypes";
-interface State {
-  username: string;
-  fullName: string;
-  isLoggedIn: boolean;
-  isLoading: boolean;
-  userRoles: string[];
-  message: string;
-}
 
-const initalState: State = {
+const initalState: Types.State = {
   username: "",
   fullName: "",
   isLoggedIn: false,
   isLoading: false,
+  isLoginSuccess: false,
   userRoles: [],
   message: "",
 };
 
-const reducer = (state: State = initalState, action: Types.Action) => {
+const reducer = (state: Types.State = initalState, action: Types.Action) => {
   switch (action.type) {
     case "login":
       return {
         ...state,
         username: action.payload.username,
         userRoles: action.payload.userRoles,
-        fullName: action.payload.fullName
+        fullName: action.payload.fullName,
       };
     case "logout":
       return {
         ...state,
+        fullName:"",
         userName: "",
         isLoggedIn: false,
         userRoles: [],
       };
+    case "loginSuccess":
+      return { ...state,isLoginSuccessful:true, isLoggedIn: true };
     case "start":
       return { ...state, isLoading: true, message: "" };
     case "success":

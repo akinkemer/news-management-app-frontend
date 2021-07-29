@@ -1,5 +1,80 @@
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
+import { RootState } from "../service/index";
+import { login } from "../service/user/UserActions";
 import loginSVG from "../svg/login.svg";
+import { FcOk } from "react-icons/fc";
+import { Row, Modal, Col } from "react-bootstrap";
+
 function SignInPage() {
+  const dispatch = useDispatch();
+  const isLoading = useSelector((state: RootState) => state.user.isLoading);
+  const isLoggedIn = useSelector((state: RootState) => state.user.isLoggedIn);
+
+  const history = useHistory();
+
+  const [isFirstVisit, setIsFirstVisit] = useState(true);
+  const [username, setUserName] = useState("");
+  const [password, setPassword] = useState("");
+  const [isUserNameValid, setIsUserNameValid] = useState(false);
+  const [isPasswordValid, setIsPasswordValid] = useState(false);
+
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+
+  const showModal = () => {
+    setModalIsOpen(true);
+  };
+
+  const redirectMainPage = () => {
+    setModalIsOpen(true);
+    history.push("/");
+  };
+
+  useEffect(() => {
+    if (username.match(/^([a-zA-Z_][a-zA-Z0-9_]*).{3,40}$/)) {
+      setIsUserNameValid(true);
+    } else {
+      setIsUserNameValid(false);
+    }
+  }, [username]);
+
+  useEffect(() => {
+    if (password.match(/^.{8,20}$/)) {
+      setIsPasswordValid(true);
+    } else {
+      setIsPasswordValid(false);
+    }
+  }, [password]);
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsFirstVisit(false);
+    if (isUserNameValid && isPasswordValid) {
+      dispatch(login({ username: username, password: password }));
+    }
+    if (isLoggedIn) {
+      showModal();
+      setTimeout(redirectMainPage, 2000);
+    }
+  };
+
+  const handleUsername = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setUserName(e.target.value);
+  };
+  const handlePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPassword(e.target.value);
+  };
+  const userNameStyle = isFirstVisit
+    ? "form-control"
+    : isUserNameValid
+    ? "form-control is-valid"
+    : "form-control is-invalid";
+  const passwordStyle = isFirstVisit
+    ? "form-control"
+    : isPasswordValid
+    ? "form-control is-valid"
+    : "form-control is-invalid";
   return (
     <div>
       <div className="row">
@@ -17,14 +92,25 @@ function SignInPage() {
           />
         </div>
         <div className="col-md-6 col-xl-4 my-auto">
-          <form>
+          <form onSubmit={(e) => handleSubmit(e)}>
             <div className="mb-3">
-              <label htmlFor="exampleInputEmail1" className="form-label">
+              <label htmlFor="inputUserName" className="form-label">
                 Username
               </label>
-              <input type="text" className="form-control" id="inputUserName" />
-              <div id="usernameHelp" className="form-text">
-                This is your unique username.
+              <input
+                type="text"
+                className={userNameStyle}
+                id="inputUserName"
+                value={username}
+                onChange={(e) => handleUsername(e)}
+                required
+              />
+              {isFirstVisit ? (
+                <div className="form-text">This is your unique username.</div>
+              ) : null}
+              <div className="valid-feedback">Looks good!</div>
+              <div className="invalid-feedback">
+                Please select a valid username.
               </div>
             </div>
             <div className="mb-3">
@@ -33,23 +119,64 @@ function SignInPage() {
               </label>
               <input
                 type="password"
-                className="form-control"
+                className={passwordStyle}
                 id="inputPassword"
+                value={password}
+                onChange={(e) => handlePassword(e)}
               />
-              <div id="passwordHelp" className="form-text">
-                Must be 8-20 characters long.
+              {isFirstVisit ? (
+                <div className="form-text">Must be 8-20 characters long.</div>
+              ) : null}
+              <div className="valid-feedback">Looks good!</div>
+              <div className="invalid-feedback">
+                Must be 8-20 characters long
               </div>
             </div>
             <div className="d-grid mb-3">
-              <button type="submit" className="btn btn-block btn-primary p-2">
-                Sign In
-              </button>
+              {isLoading ? (
+                <button
+                  className="btn btn-block btn-primary p-2"
+                  type="button"
+                  disabled
+                >
+                  <span
+                    className="spinner-border spinner-border-sm"
+                    role="status"
+                    aria-hidden="true"
+                  ></span>
+                </button>
+              ) : (
+                <button type="submit" className="btn btn-block btn-primary p-2">
+                  Sign In
+                </button>
+              )}
             </div>
           </form>
         </div>
       </div>
+      <Modal
+        show={modalIsOpen}
+        size="sm"
+        aria-labelledby="contained-modal-title-vcenter"
+        animation={true}
+        centered
+      >
+        <Modal.Header></Modal.Header>
+        <Modal.Body>
+          <Row className="mx-auto mb-1 text-center">
+            <Col xs={12}>
+              <FcOk size={"4em"} />
+            </Col>
+          </Row>
+          <Row>
+            <Col xs={12} className="text-center">
+              <h4 style={{ color: "#4caf50" }}>Login Successful!</h4>
+            </Col>
+          </Row>
+          <h6 className="text-center mt-3">You are redirecting the main page...</h6>
+        </Modal.Body>
+      </Modal>
     </div>
   );
 }
-
 export default SignInPage;

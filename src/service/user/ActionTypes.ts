@@ -1,7 +1,21 @@
+export interface State {
+  username: string;
+  fullName: string;
+  isLoggedIn: boolean;
+  isLoginSuccess: boolean;
+  isLoading: boolean;
+  userRoles: string[];
+  message: string;
+}
+
 export interface UserLoginPayload {
   username: string;
   fullName: string;
   userRoles: string[];
+}
+export interface UserLoginForm {
+  username: string;
+  password: string;
 }
 export interface ActionStart {
   type: "start";
@@ -19,7 +33,9 @@ export interface LoginAction {
   type: "login";
   payload: UserLoginPayload;
 }
-
+export interface LoginSuccessAction {
+  type: "loginSuccess";
+}
 export interface LogoutAction {
   type: "logout";
 }
@@ -27,6 +43,7 @@ export interface LogoutAction {
 export type Action =
   | LoginAction
   | LogoutAction
+  | LoginSuccessAction
   | ActionStart
   | ActionFailed
   | ActionSuccess;
