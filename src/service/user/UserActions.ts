@@ -69,6 +69,7 @@ export const login = (userLoginForm: Types.UserLoginForm) => {
       })
       .catch((error) => {
         dispatch(actionFailed(error.message));
+        console.log(error.message)
       });
   };
 };

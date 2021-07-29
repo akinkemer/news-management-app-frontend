@@ -4,14 +4,15 @@ import { useHistory } from "react-router-dom";
 import { RootState } from "../service/index";
 import { login } from "../service/user/UserActions";
 import loginSVG from "../svg/login.svg";
-import { FcOk } from "react-icons/fc";
+import { Animate } from "react-simple-animate";
 import { Row, Modal, Col } from "react-bootstrap";
+import { FcOk } from "react-icons/fc";
 
 function SignInPage() {
   const dispatch = useDispatch();
   const isLoading = useSelector((state: RootState) => state.user.isLoading);
   const isLoggedIn = useSelector((state: RootState) => state.user.isLoggedIn);
-
+  const message = useSelector((state: RootState) => state.user.message);
   const history = useHistory();
 
   const [isFirstVisit, setIsFirstVisit] = useState(true);
@@ -19,7 +20,7 @@ function SignInPage() {
   const [password, setPassword] = useState("");
   const [isUserNameValid, setIsUserNameValid] = useState(false);
   const [isPasswordValid, setIsPasswordValid] = useState(false);
-
+  const [loginFailedMessage, setLoginFailedMessage] = useState("");
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
   const showModal = () => {
@@ -27,8 +28,7 @@ function SignInPage() {
   };
 
   const redirectMainPage = () => {
-    setModalIsOpen(true);
-    history.push("/");
+    setTimeout(()=>{history.push("/")},2000);
   };
 
   useEffect(() => {
@@ -46,17 +46,27 @@ function SignInPage() {
       setIsPasswordValid(false);
     }
   }, [password]);
+  useEffect(() => {
+    if (message === "Request failed with status code 401") {
+      setLoginFailedMessage("Please check your username and password!");
+    } else {
+      setLoginFailedMessage("");
+    }
+  }, [message]);
+  useEffect(() => {
+    if (isLoggedIn) {
+      showModal();
+      redirectMainPage();
+    }
+    
+  }, [isLoggedIn]);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsFirstVisit(false);
     if (isUserNameValid && isPasswordValid) {
       dispatch(login({ username: username, password: password }));
-    }
-    if (isLoggedIn) {
-      showModal();
-      setTimeout(redirectMainPage, 2000);
-    }
+    }    
   };
 
   const handleUsername = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -76,7 +86,8 @@ function SignInPage() {
     ? "form-control is-valid"
     : "form-control is-invalid";
   return (
-    <div>
+    <Animate play start={{ opacity: 0 }} end={{ opacity: 1 }} delay={0.1} duration={0.6}>
+      <div>
       <div className="row">
         <div className="col-12">
           <h1 className="text-center mt-5">Sign In Your Account</h1>
@@ -146,13 +157,22 @@ function SignInPage() {
                   ></span>
                 </button>
               ) : (
-                <button type="submit" className="btn btn-block btn-primary p-2">
-                  Sign In
-                </button>
+                <>
+                  <button
+                    type="submit"
+                    className="btn btn-block btn-primary p-2 is-invalid"
+                  >
+                    Sign In
+                  </button>
+                  <div className="invalid-feedback">
+                    {loginFailedMessage}
+                  </div>
+                </>
               )}
             </div>
           </form>
         </div>
+      </div>
       </div>
       <Modal
         show={modalIsOpen}
@@ -176,7 +196,7 @@ function SignInPage() {
           <h6 className="text-center mt-3">You are redirecting the main page...</h6>
         </Modal.Body>
       </Modal>
-    </div>
+    </Animate>
   );
 }
 export default SignInPage;

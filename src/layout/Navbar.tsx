@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { RiUser3Line,RiLogoutBoxLine } from "react-icons/ri";
 import { useDispatch} from "react-redux";
 import { logout } from "../service/user/UserActions";
+import { useHistory } from "react-router-dom";
 
 interface INavbarProps {
   isLoggedIn: boolean;
@@ -11,9 +12,11 @@ interface INavbarProps {
 }
 
 const Navbar: FunctionComponent<INavbarProps> = (props) => {
+  const history = useHistory();
   const dispatch = useDispatch();
   const handleLogout = () => {
     dispatch(logout());
+    history.push("/logout")
   }
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light">

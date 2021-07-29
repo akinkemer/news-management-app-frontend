@@ -3,7 +3,7 @@ import Navbar from "./layout/Navbar";
 import MainPage from "./pages/MainPage";
 import NotFoundErrorPage from "./pages/NotFoundErrorPage";
 
-import { useDispatch, useSelector } from "react-redux";
+import { /*useDispatch,*/ useSelector } from "react-redux";
 import { RootState } from "./service/index";
 
 import {
@@ -16,9 +16,10 @@ import SignInPage from "./pages/SignInPage";
 import RegisterPage from "./pages/RegisterPage";
 import NewsPage from "./pages/NewsPage";
 import AnnouncementsPage from "./pages/AnnouncementsPage";
+import LogoutPage from "./pages/LogoutPage";
 
 function App() {
-  const dispatch = useDispatch();
+  //const dispatch = useDispatch();
   const isLoggedIn = useSelector((state: RootState) => state.user.isLoggedIn);
   const userRoles = useSelector((state: RootState) => state.user.userRoles);
   const userFullName = useSelector((state: RootState) => state.user.fullName);
@@ -31,12 +32,14 @@ function App() {
           <Route exact path="/" component={MainPage} />
           <Route exact path="/news" component={NewsPage} />
           <Route exact path="/announcements" component={AnnouncementsPage} />
-          {isLoggedIn ? (
+          <Route exact path="/signIn" component={SignInPage} />
+           {isLoggedIn ? (
             <Redirect to="/" />
           ) : (
-            <Route exact path="/signIn" component={SignInPage} />
+            <Route exact path="/logout" component={LogoutPage} />
           )}
           <Route exact path="/register" component={RegisterPage} />
+          
           <Route component={NotFoundErrorPage} />
         </Switch>
       </div>

@@ -1,8 +1,10 @@
+import { Animate } from "react-simple-animate";
+
 function MainPage() {
     return (
-        <div>
+        <Animate play start={{ opacity: 0 }} end={{ opacity: 1 }} delay={0.1} duration={0.8}>
             <h1>Main Page</h1>
-        </div>
+        </Animate>
     );
 }
 

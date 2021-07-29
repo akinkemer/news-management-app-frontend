@@ -1,6 +1,9 @@
+import { Animate } from "react-simple-animate";
 import accountSVG from "../svg/account.svg";
 function RegisterPage() {
   return (
+    <Animate play start={{ opacity: 0 }} end={{ opacity: 1 }} delay={0.1} duration={0.6}>
+
     <div>
       <div className="row">
         <div className="col-12">
@@ -68,7 +71,8 @@ function RegisterPage() {
           </form>
         </div>
       </div>
-    </div>
+      </div>
+      </Animate>
   );
 }
 
