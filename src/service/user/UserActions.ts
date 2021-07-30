@@ -1,23 +1,7 @@
-import axios from "axios";
+import { axiosWithJwt, axiosCustom } from "../axios";
+import querystring, { ParsedUrlQueryInput } from "querystring"
 import { Dispatch } from "redux";
 import * as Types from "./ActionTypes";
-
-const baseURL = "http://localhost:8080/api/v1";
-
-const contentType = {
-  headers: {
-    "Content-Type": "application/x-www-form-urlencoded",
-  },
-};
-
-const contentTypeWithJWT = (token: string) => {
-  return {
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
-      Authorization: `Bearer ${token}`,
-    },
-  };
-};
 
 interface LoginResponse {
   access_token: string;
@@ -33,24 +17,18 @@ interface CurrentUserResponse {
   success: boolean;
 }
 
-export const login = (userLoginForm: Types.UserLoginForm) => {
+export const login = (userLoginForm: ParsedUrlQueryInput) => {
   return (dispatch: Dispatch<Types.Action>) => {
     dispatch(actionStart());
-    const params = new URLSearchParams();
-    params.append("username", userLoginForm.username);
-    params.append("password", userLoginForm.password);
-    axios
-      .post<LoginResponse>(`${baseURL}/login`, params, contentType)
+    axiosCustom
+      .post<LoginResponse>("/login",querystring.stringify(userLoginForm))
       .then((response) => {
         dispatch(actionSuccess("Login Successful"));
         localStorage.setItem("jwtToken", response.data.access_token);
         dispatch(actionStart());
 
-        axios
-          .get<CurrentUserResponse>(
-            `${baseURL}/user/currentUser`,
-            contentTypeWithJWT(response.data.access_token)
-          )
+        axiosWithJwt
+          .get<CurrentUserResponse>("/user/currentUser")
           .then((response) => {
             dispatch(actionSuccess("User fetched successfully"));
             dispatch(
@@ -61,7 +39,6 @@ export const login = (userLoginForm: Types.UserLoginForm) => {
               })
             );
             dispatch(actionLoginSuccess());
-            
           })
           .catch((error) => {
             dispatch(actionFailed(error.message));
@@ -69,7 +46,7 @@ export const login = (userLoginForm: Types.UserLoginForm) => {
       })
       .catch((error) => {
         dispatch(actionFailed(error.message));
-        console.log(error.message)
+        console.log(error);
       });
   };
 };

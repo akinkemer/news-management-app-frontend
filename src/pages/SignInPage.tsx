@@ -58,14 +58,13 @@ function SignInPage() {
       showModal();
       redirectMainPage();
     }
-    
   }, [isLoggedIn]);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsFirstVisit(false);
     if (isUserNameValid && isPasswordValid) {
-      dispatch(login({ username: username, password: password }));
+      dispatch(login({ userName: username, password: password }));
     }    
   };
 

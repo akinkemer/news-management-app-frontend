@@ -14,7 +14,7 @@ export interface UserLoginPayload {
   userRoles: string[];
 }
 export interface UserLoginForm {
-  username: string;
+  userName: string;
   password: string;
 }
 export interface ActionStart {
