@@ -1,13 +1,14 @@
 import { FunctionComponent } from "react";
 import { Link } from "react-router-dom";
-import { RiUser3Line,RiLogoutBoxLine } from "react-icons/ri";
-import { useDispatch} from "react-redux";
+import { RiUser3Line, RiLogoutBoxLine } from "react-icons/ri";
+import { IoSettingsOutline } from "react-icons/io5";
+import { useDispatch } from "react-redux";
 import { logout } from "../service/user/UserActions";
 import { useHistory } from "react-router-dom";
 
 interface INavbarProps {
   isLoggedIn: boolean;
-  userRoles: string[];
+  isUserAdmin:boolean;
   userFullName: string;
 }
 
@@ -16,8 +17,9 @@ const Navbar: FunctionComponent<INavbarProps> = (props) => {
   const dispatch = useDispatch();
   const handleLogout = () => {
     dispatch(logout());
-    history.push("/logout")
-  }
+    history.push("/logout");
+  };
+
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
       <div className="container">
@@ -37,14 +39,46 @@ const Navbar: FunctionComponent<INavbarProps> = (props) => {
         </button>
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav">
-            <li className="nav-item">
-              <Link to="/news" className="nav-link">News</Link>
-            </li>
-            <li className="nav-item">
-              <Link to="/announcements" className="nav-link">Announcements</Link>
-            </li>
+            {props.isLoggedIn ? (
+              <>
+                <li className="nav-item">
+                  <Link to="/news" className="nav-link">
+                    News
+                  </Link>
+                </li>
+                <li className="nav-item dropdown">
+                  <Link to="/announcements" className="nav-link">
+                    Announcements
+                  </Link>
+                </li>
+              </>
+            ) : null}
           </ul>
           <ul className="navbar-nav ms-auto">
+            {props.isLoggedIn && props.isUserAdmin ? (
+              <li className="nav-item dropdown mx-md-2">
+                <button
+                  className="btn btn-outline-secondary nav-link dropdown-toggle px-2"
+                  id="manageDropdown"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  <IoSettingsOutline size={"1.2em"} className="mx-1 mb-1" />
+                  Manage
+                </button>
+                <ul className="dropdown-menu" aria-labelledby="manageDropdown">
+                  <li className="nav-item">
+                    <Link to="/manageAnnouncements" className="dropdown-item">
+                      Manage Announcements
+                    </Link>
+                    <Link to="/manageNews" className="dropdown-item">
+                      Manage News
+                    </Link>
+                  </li>
+                </ul>
+              </li>
+            ) : null}
             {props.isLoggedIn ? (
               <li className="nav-item dropdown">
                 <button
@@ -59,8 +93,11 @@ const Navbar: FunctionComponent<INavbarProps> = (props) => {
                 </button>
                 <ul className="dropdown-menu" aria-labelledby="accountDropdown">
                   <li className="nav-item">
-                    <button className="dropdown-item btn" onClick={()=>handleLogout()}>
-                      <RiLogoutBoxLine size={"1.2em" } className="mb-1"/>
+                    <button
+                      className="dropdown-item btn"
+                      onClick={() => handleLogout()}
+                    >
+                      <RiLogoutBoxLine size={"1.2em"} className="mb-1" />
                       Logout
                     </button>
                   </li>

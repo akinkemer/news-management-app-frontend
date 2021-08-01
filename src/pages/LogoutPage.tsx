@@ -9,7 +9,7 @@ function LogoutPage() {
   useEffect(() => {
     setTimeout(() => {
       history.push("/");
-    }, 2000);
+    }, 1000);
   });
   return (
     <Animate

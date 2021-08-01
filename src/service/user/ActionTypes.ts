@@ -4,18 +4,29 @@ export interface State {
   isLoggedIn: boolean;
   isLoginSuccess: boolean;
   isLoading: boolean;
-  userRoles: string[];
+  userRoles: {name:string,id:number}[];
   message: string;
 }
 
 export interface UserLoginPayload {
   username: string;
   fullName: string;
-  userRoles: string[];
+  userRoles: {name:string,id:number}[];
 }
 export interface UserLoginForm {
   userName: string;
   password: string;
+}
+export interface RegisterForm {
+  userName: string;
+  name: string;
+  email: string;
+  password: string;
+}
+export interface RegisterResponse {
+  success: boolean,
+  message: string,
+  data:string[]|null
 }
 export interface ActionStart {
   type: "start";
@@ -39,6 +50,7 @@ export interface LoginSuccessAction {
 export interface LogoutAction {
   type: "logout";
 }
+
 
 export type Action =
   | LoginAction

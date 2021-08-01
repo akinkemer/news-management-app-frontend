@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect, FunctionComponent } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { RootState } from "../service/index";
@@ -7,8 +7,9 @@ import loginSVG from "../svg/login.svg";
 import { Animate } from "react-simple-animate";
 import { Row, Modal, Col } from "react-bootstrap";
 import { FcOk } from "react-icons/fc";
+import { userNameRegex, passwordRegex } from "../utils/Regex";
 
-function SignInPage() {
+const SignInPage: FunctionComponent = () => {
   const dispatch = useDispatch();
   const isLoading = useSelector((state: RootState) => state.user.isLoading);
   const isLoggedIn = useSelector((state: RootState) => state.user.isLoggedIn);
@@ -28,11 +29,13 @@ function SignInPage() {
   };
 
   const redirectMainPage = () => {
-    setTimeout(()=>{history.push("/")},2000);
+    setTimeout(() => {
+      history.push("/");
+    }, 2000);
   };
 
   useEffect(() => {
-    if (username.match(/^([a-zA-Z_][a-zA-Z0-9_]*).{3,40}$/)) {
+    if (username.match(userNameRegex)) {
       setIsUserNameValid(true);
     } else {
       setIsUserNameValid(false);
@@ -40,7 +43,7 @@ function SignInPage() {
   }, [username]);
 
   useEffect(() => {
-    if (password.match(/^.{8,20}$/)) {
+    if (password.match(passwordRegex)) {
       setIsPasswordValid(true);
     } else {
       setIsPasswordValid(false);
@@ -65,7 +68,7 @@ function SignInPage() {
     setIsFirstVisit(false);
     if (isUserNameValid && isPasswordValid) {
       dispatch(login({ userName: username, password: password }));
-    }    
+    }
   };
 
   const handleUsername = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -85,93 +88,97 @@ function SignInPage() {
     ? "form-control is-valid"
     : "form-control is-invalid";
   return (
-    <Animate play start={{ opacity: 0 }} end={{ opacity: 1 }} delay={0.1} duration={0.6}>
+    <Animate
+      play
+      start={{ opacity: 0 }}
+      end={{ opacity: 1 }}
+      delay={0.1}
+      duration={0.6}
+    >
       <div>
-      <div className="row">
-        <div className="col-12">
-          <h1 className="text-center mt-5">Sign In Your Account</h1>
+        <div className="row">
+          <div className="col-12">
+            <h1 className="text-center mt-5">Sign In Your Account</h1>
+          </div>
         </div>
-      </div>
-      <div className="row my-4">
-        <div className="col-md-6 mb-5">
-          <img
-            src={loginSVG}
-            className="img-fluid mx-auto d-block"
-            width="400px"
-            alt="Sign In"
-          />
-        </div>
-        <div className="col-md-6 col-xl-4 my-auto">
-          <form onSubmit={(e) => handleSubmit(e)}>
-            <div className="mb-3">
-              <label htmlFor="inputUserName" className="form-label">
-                Username
-              </label>
-              <input
-                type="text"
-                className={userNameStyle}
-                id="inputUserName"
-                value={username}
-                onChange={(e) => handleUsername(e)}
-                required
-              />
-              {isFirstVisit ? (
-                <div className="form-text">This is your unique username.</div>
-              ) : null}
-              <div className="valid-feedback">Looks good!</div>
-              <div className="invalid-feedback">
-                Please select a valid username.
+        <div className="row my-4">
+          <div className="col-md-6 mb-5">
+            <img
+              src={loginSVG}
+              className="img-fluid mx-auto d-block"
+              width="400px"
+              alt="Sign In"
+            />
+          </div>
+          <div className="col-md-6 col-xl-4 my-auto">
+            <form onSubmit={(e) => handleSubmit(e)}>
+              <div className="mb-3">
+                <label htmlFor="inputUserName" className="form-label">
+                  Username
+                </label>
+                <input
+                  type="text"
+                  className={userNameStyle}
+                  id="inputUserName"
+                  value={username}
+                  onChange={(e) => handleUsername(e)}
+                  required
+                />
+                {isFirstVisit ? (
+                  <div className="form-text">This is your unique username.</div>
+                ) : null}
+                <div className="valid-feedback">Looks good!</div>
+                <div className="invalid-feedback">
+                  Please select a valid username.
+                </div>
               </div>
-            </div>
-            <div className="mb-3">
-              <label htmlFor="inputPassword" className="form-label">
-                Password
-              </label>
-              <input
-                type="password"
-                className={passwordStyle}
-                id="inputPassword"
-                value={password}
-                onChange={(e) => handlePassword(e)}
-              />
-              {isFirstVisit ? (
-                <div className="form-text">Must be 8-20 characters long.</div>
-              ) : null}
-              <div className="valid-feedback">Looks good!</div>
-              <div className="invalid-feedback">
-                Must be 8-20 characters long
+              <div className="mb-3">
+                <label htmlFor="inputPassword" className="form-label">
+                  Password
+                </label>
+                <input
+                  type="password"
+                  className={passwordStyle}
+                  id="inputPassword"
+                  value={password}
+                  onChange={(e) => handlePassword(e)}
+                />
+                {isFirstVisit ? (
+                  <div className="form-text">Must be 8-20 characters long.</div>
+                ) : null}
+                <div className="valid-feedback">Looks good!</div>
+                <div className="invalid-feedback">
+                  Must be 8-20 characters long
+                </div>
               </div>
-            </div>
-            <div className="d-grid mb-3">
-              {isLoading ? (
-                <button
-                  className="btn btn-block btn-primary p-2"
-                  type="button"
-                  disabled
-                >
-                  <span
-                    className="spinner-border spinner-border-sm"
-                    role="status"
-                    aria-hidden="true"
-                  ></span>
-                </button>
-              ) : (
-                <>
+              <div className="d-grid mb-3">
+                {isLoading ? (
                   <button
-                    type="submit"
-                    className="btn btn-block btn-primary p-2 is-invalid"
+                    className="btn btn-block btn-primary p-2"
+                    type="button"
+                    disabled
                   >
-                    Sign In
+                    <span
+                      className="spinner-border spinner-border-sm"
+                      role="status"
+                      aria-hidden="true"
+                    ></span>
                   </button>
-                  <div className="invalid-feedback">
-                    {loginFailedMessage}
-                  </div>
-                </>
-              )}
-            </div>
-          </form>
+                ) : (
+                  <>
+                    <button
+                      type="submit"
+                      className="btn btn-block btn-primary p-2 is-invalid"
+                    >
+                      Sign In
+                    </button>
+                    <div className="invalid-feedback">{loginFailedMessage}</div>
+                  </>
+                )}
+              </div>
+            </form>
+          </div>
         </div>
-      </div>
       </div>
       <Modal
         show={modalIsOpen}
@@ -192,10 +199,12 @@ function SignInPage() {
               <h4 style={{ color: "#4caf50" }}>Login Successful!</h4>
             </Col>
           </Row>
-          <h6 className="text-center mt-3">You are redirecting the main page...</h6>
+          <h6 className="text-center mt-3">
+            You are redirecting the main page...
+          </h6>
         </Modal.Body>
       </Modal>
     </Animate>
   );
-}
+};
 export default SignInPage;

@@ -1,7 +1,11 @@
+import { useEffect } from "react";
 import { Animate } from "react-simple-animate";
+import { connect } from "../service/websocket/AnnouncementBroker";
 
 function AnnouncementsPage() {
-
+  useEffect(() => {
+    connect();
+  });
   return (
     <Animate
       play

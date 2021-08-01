@@ -1,32 +1,18 @@
-import { Redirect, Route, useLocation } from "react-router-dom";
+import React from "react";
+import { Route, Redirect } from "react-router-dom";
 
-type PrivateRouteProps = {
-  exact: boolean,
-  path:string,
-  component: React.FC;
-  isLogged: boolean;
+const PrivateRoute: React.FC<{
+  access: boolean;
   redirectPath: string;
-};
-const PrivateRoute: React.FC<PrivateRouteProps> = ({
-  component: Component,
-  isLogged,
-  redirectPath,
-  ...rest
-}) => {
-  const location = useLocation();
-  return (
-    <Route {...rest}>
-      {isLogged === true ? (
-        <Component />
-      ) : (
-        <Redirect
-          to={{
-            pathname: redirectPath,
-          }}
-        />
-      )}
-    </Route>
+  component: React.FC;
+  path: string;
+  exact: boolean;
+}> = (props) => {
+
+  return props.access ? (
+    <Route path={props.path} exact={props.exact} component={props.component} />
+  ) : (
+    <Redirect to={props.redirectPath} />
   );
 };
-
 export default PrivateRoute;

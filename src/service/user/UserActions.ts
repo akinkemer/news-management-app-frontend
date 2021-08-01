@@ -1,4 +1,4 @@
-import { axiosWithJwt, axiosCustom } from "../axios";
+import { axiosWithJwtAndXWWW, axiosXWWW,axiosJSON,axiosXWWWwithToken } from "../axios";
 import querystring, { ParsedUrlQueryInput } from "querystring"
 import { Dispatch } from "redux";
 import * as Types from "./ActionTypes";
@@ -11,7 +11,7 @@ interface CurrentUserResponse {
   data: {
     username: string;
     fullName: string;
-    roleList: string[];
+    roleList: {name:string,id:number}[];
   };
   message: string;
   success: boolean;
@@ -20,15 +20,16 @@ interface CurrentUserResponse {
 export const login = (userLoginForm: ParsedUrlQueryInput) => {
   return (dispatch: Dispatch<Types.Action>) => {
     dispatch(actionStart());
-    axiosCustom
+    axiosXWWW
       .post<LoginResponse>("/login",querystring.stringify(userLoginForm))
       .then((response) => {
         dispatch(actionSuccess("Login Successful"));
         localStorage.setItem("jwtToken", response.data.access_token);
+        localStorage.setItem("refreshToken", response.data.refresh_token);
         dispatch(actionStart());
 
-        axiosWithJwt
-          .get<CurrentUserResponse>("/user/currentUser")
+        axiosXWWWwithToken(response.data.access_token)
+          .get<CurrentUserResponse>(`/user/getUser?userName=${userLoginForm.userName}`)
           .then((response) => {
             dispatch(actionSuccess("User fetched successfully"));
             dispatch(
@@ -42,11 +43,16 @@ export const login = (userLoginForm: ParsedUrlQueryInput) => {
           })
           .catch((error) => {
             dispatch(actionFailed(error.message));
+            console.log(error.message)
+            axiosXWWWwithToken(response.data.refresh_token).get("/token/refresh").then((response) => {
+              localStorage.setItem("jwtToken", response.data.access_token);
+              localStorage.setItem("refreshToken", response.data.refresh_token);
+              login(userLoginForm);
+            })
           });
       })
       .catch((error) => {
         dispatch(actionFailed(error.message));
-        console.log(error);
       });
   };
 };
@@ -54,9 +60,27 @@ export const logout = () => {
   return (dispatch: Dispatch<Types.Action>) => {
     dispatch(actionStart());
     localStorage.removeItem("jwtToken");
+    localStorage.removeItem("refreshToken");
     dispatch(actionLogout());
     dispatch(actionSuccess("Logout Successful"));
   };
+};
+
+export const register = (registerForm: Types.RegisterForm) => {
+  return (dispatch: Dispatch<Types.Action>) => {
+    dispatch(actionStart());
+    axiosJSON.post<Types.RegisterResponse>("/user/save", registerForm).then((response) => {
+      if (response.data.message==="Username already taken") {
+        dispatch(actionFailed("Username already taken"))
+      }
+      else {
+        dispatch(actionSuccess("User registered successfully"))
+      }
+    }).catch((error) => {
+      console.log(error);
+      dispatch(actionFailed(error.message))
+    });
+  }
 };
 
 const actionStart = (): Types.Action => {

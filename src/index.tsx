@@ -8,4 +8,4 @@ import "bootswatch/dist/flatly/bootstrap.min.css";
 
 const root = document.querySelector("#root");
 
-render(<Provider store={store}><App/></Provider>, root);
+render(<Provider store={store}><App /></Provider>, root);
