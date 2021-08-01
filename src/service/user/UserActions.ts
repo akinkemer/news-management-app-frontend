@@ -1,4 +1,4 @@
-import { axiosWithJwtAndXWWW, axiosXWWW,axiosJSON,axiosXWWWwithToken } from "../axios";
+import { axiosXWWW,axiosJSON,axiosXWWWwithToken } from "../axios";
 import querystring, { ParsedUrlQueryInput } from "querystring"
 import { Dispatch } from "redux";
 import * as Types from "./ActionTypes";

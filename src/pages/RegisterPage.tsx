@@ -26,7 +26,7 @@ function RegisterPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const [registerFailedMessage, setRegisterFailedMessage] = useState("");
+  //const [registerFailedMessage, setRegisterFailedMessage] = useState("");
 
   const [isFirstVisit, setIsFirstVisit] = useState(true);
   const [isUserNameValid, setIsUserNameValid] = useState(false);

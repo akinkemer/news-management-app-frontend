@@ -2,14 +2,14 @@ import axios from "axios";
 
 const baseURL = "http://localhost:8080/api/v1";
 
-export const axiosWithJwtAndXWWW = axios.create({
+/*export const axiosWithJwtAndXWWW = axios.create({
   baseURL: baseURL,
   timeout: 1000 * 10,
   headers: {
     "Content-Type": "application/x-www-form-urlencoded",
     Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
   },
-});
+});*/
 export const axiosXWWW = axios.create({
   baseURL: baseURL,
   timeout: 1000 * 10,
@@ -23,6 +23,13 @@ export const axiosJSON = axios.create({
   timeout: 1000 * 10,
   headers: {
     "Content-Type": "application/json",
+  },
+});
+export const axiosFormData = axios.create({
+  baseURL: baseURL,
+  timeout: 1000 * 10,
+  headers: {
+    "Content-Type": "multipart/form-data",
   },
 });
 export const axiosXWWWwithToken = (token:string) => {

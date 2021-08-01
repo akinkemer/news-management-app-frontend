@@ -60,7 +60,6 @@ const Navbar: FunctionComponent<INavbarProps> = (props) => {
                 <button
                   className="btn btn-outline-secondary nav-link dropdown-toggle px-2"
                   id="manageDropdown"
-                  role="button"
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
                 >
@@ -70,10 +69,10 @@ const Navbar: FunctionComponent<INavbarProps> = (props) => {
                 <ul className="dropdown-menu" aria-labelledby="manageDropdown">
                   <li className="nav-item">
                     <Link to="/manageAnnouncements" className="dropdown-item">
-                      Manage Announcements
+                      Announcements
                     </Link>
                     <Link to="/manageNews" className="dropdown-item">
-                      Manage News
+                      News
                     </Link>
                   </li>
                 </ul>
@@ -84,7 +83,6 @@ const Navbar: FunctionComponent<INavbarProps> = (props) => {
                 <button
                   className="btn btn-outline-secondary nav-link dropdown-toggle px-2"
                   id="accountDropdown"
-                  role="button"
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
                 >

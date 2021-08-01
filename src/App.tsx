@@ -10,7 +10,6 @@ import {
   BrowserRouter as Router,
   Route,
   Switch,
-  Redirect,
 } from "react-router-dom";
 import SignInPage from "./pages/SignInPage";
 import RegisterPage from "./pages/RegisterPage";
@@ -42,9 +41,9 @@ function App() {
           <PrivateRoute exact path="/announcements" component={AnnouncementsPage} access={isLoggedIn} redirectPath="/" />
           <PrivateRoute exact path="/manageNews" component={ManageNewsPage} access={isUserAdmin() } redirectPath="/"/>
           <PrivateRoute exact path="/manageAnnouncements" component={ManageAnnounsPage} access={isUserAdmin() } redirectPath="/" />
-          <PrivateRoute exact path="/signIn" component={SignInPage} access={!isLoggedIn} redirectPath="/"/>
+          <Route exact path="/signIn" component={SignInPage}/>
           <Route exact path="/logout" component={LogoutPage} />
-          <PrivateRoute exact path="/register" component={RegisterPage} access={!isLoggedIn} redirectPath="/" />
+          <Route exact path="/register" component={RegisterPage} />
           <Route component={NotFoundErrorPage} />
         </Switch>
       </div>

@@ -28,12 +28,6 @@ const SignInPage: FunctionComponent = () => {
     setModalIsOpen(true);
   };
 
-  const redirectMainPage = () => {
-    setTimeout(() => {
-      history.push("/");
-    }, 2000);
-  };
-
   useEffect(() => {
     if (username.match(userNameRegex)) {
       setIsUserNameValid(true);
@@ -59,9 +53,11 @@ const SignInPage: FunctionComponent = () => {
   useEffect(() => {
     if (isLoggedIn) {
       showModal();
-      redirectMainPage();
+      setTimeout(() => {
+        history.push("/");
+      }, 2000);
     }
-  }, [isLoggedIn]);
+  }, [isLoggedIn,history]);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
