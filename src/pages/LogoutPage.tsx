@@ -19,24 +19,26 @@ function LogoutPage() {
       delay={0.1}
       duration={0.8}
     >
-      <div
-        className="d-flex flex-row align-items-center"
-        style={{ minHeight: "73vh" }}
-      >
-        <div className="container">
-          <div className="row justify-content-center">
-            <div className="col-md-12 text-center">
-              <span className="display-1 d-block">Logout Succesful</span>
+      <div className="container">
+        <div
+          className="d-flex flex-row align-items-center"
+          style={{ minHeight: "73vh" }}
+        >
+          <div className="container">
+            <div className="row justify-content-center">
+              <div className="col-md-12 text-center">
+                <span className="display-1 d-block">Logout Succesful</span>
 
-              <div className="mb-4">
-                <FcExport size={"5em"} />
-              </div>
+                <div className="mb-4">
+                  <FcExport size={"5em"} />
+                </div>
 
-              <Link to={"/"} className="btn btn-link col-12">
-                Continue without login
-              </Link>
-              <div className="spinner-border text-success mt-3" role="status">
-                <span className="visually-hidden">Loading...</span>
+                <Link to={"/"} className="btn btn-link col-12">
+                  Continue without login
+                </Link>
+                <div className="spinner-border text-success mt-3" role="status">
+                  <span className="visually-hidden">Loading...</span>
+                </div>
               </div>
             </div>
           </div>

@@ -34,7 +34,6 @@ function App() {
   return (
     <Router>
       <Navbar isLoggedIn={isLoggedIn} isUserAdmin={isUserAdmin()} userFullName={userFullName} />
-      <div className="container">
         <Switch>
           <Route exact path="/" component={MainPage} />
           <PrivateRoute exact path="/news" component={NewsPage} access={isLoggedIn} redirectPath="/" />
@@ -46,7 +45,6 @@ function App() {
           <Route exact path="/register" component={RegisterPage} />
           <Route component={NotFoundErrorPage} />
         </Switch>
-      </div>
       <Footer />
     </Router>
   );

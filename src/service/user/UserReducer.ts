@@ -10,7 +10,7 @@ const initalState: Types.State = {
   message: "",
 };
 
-const reducer = (state: Types.State = initalState, action: Types.Action) => {
+const reducer = (state: Types.State = initalState, action: Types.Action):Types.State => {
   switch (action.type) {
     case "login":
       return {
@@ -23,12 +23,12 @@ const reducer = (state: Types.State = initalState, action: Types.Action) => {
       return {
         ...state,
         fullName:"",
-        userName: "",
+        username: "",
         isLoggedIn: false,
         userRoles: [],
       };
     case "loginSuccess":
-      return { ...state,isLoginSuccessful:true, isLoggedIn: true };
+      return { ...state,isLoginSuccess:true, isLoggedIn: true };
     case "start":
       return { ...state, isLoading: true, message: "" };
     case "success":

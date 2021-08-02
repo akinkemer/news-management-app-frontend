@@ -51,7 +51,6 @@ export interface LogoutAction {
   type: "logout";
 }
 
-
 export type Action =
   | LoginAction
   | LogoutAction

@@ -82,6 +82,36 @@ export interface ActionCreateNews {
   payload: News;
 }
 
+export interface ImageSavedResponse {
+  data: {
+    fileName: string;
+    fileUrl: string;
+  };
+}
+
+export interface NewsSavedResponse {
+  data: {
+    id: number;
+    subject: string;
+    content: string;
+    invalidAt: string;
+    createdAt: string;
+    link: string;
+    success: boolean;
+  };
+}
+export interface AnnouncementSavedResponse {
+  data: {
+    id: number;
+    subject: string;
+    content: string;
+    invalidAt: string;
+    createdAt: string;
+    imageLink: string;
+    success: boolean;
+  };
+}
+
 export type Action =
   | ActionStart
   | ActionFailed

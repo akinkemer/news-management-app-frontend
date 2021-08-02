@@ -91,7 +91,7 @@ const SignInPage: FunctionComponent = () => {
       delay={0.1}
       duration={0.6}
     >
-      <div>
+      <div className="container" style={{minHeight: "73vh"}}>
         <div className="row">
           <div className="col-12">
             <h1 className="text-center mt-5">Sign In Your Account</h1>

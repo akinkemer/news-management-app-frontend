@@ -6,7 +6,7 @@ const initalState: Types.State = {
   isLoading: false,
   message: "",
 };
-const reducer = (state: Types.State = initalState, action: Types.Action) => {
+const reducer = (state: Types.State = initalState, action: Types.Action):Types.State => {
   switch (action.type) {
     case "getNews":
       return { ...state, news: action.payload };
@@ -27,7 +27,7 @@ const reducer = (state: Types.State = initalState, action: Types.Action) => {
     case "updateAnnouncement":
       return {
         ...state,
-        announcement: state.announcements.map((announ) => {
+        announcements: state.announcements.map((announ) => {
           return announ.id === action.payload.id ? action.payload : announ;
         }),
       };
@@ -41,19 +41,19 @@ const reducer = (state: Types.State = initalState, action: Types.Action) => {
     case "createAnnouncement":
       return {
         ...state,
-        announcements: state.announcements.push(action.payload),
+        announcements: [...state.announcements,action.payload],
       };
     case "createNews":
-      return { ...state, news: state.news.push(action.payload) };
+      return { ...state, news:[ ...state.news,action.payload] };
     case "start":
       return { ...state, isLoading: true, message: "" };
     case "success":
       return { ...state, isLoading: false, message: action.payload };
     case "failed":
       return { ...state, isLoading: false, message: action.payload };
-
     default:
       return state;
   }
 };
+
 export default reducer;

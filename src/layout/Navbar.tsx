@@ -8,7 +8,7 @@ import { useHistory } from "react-router-dom";
 
 interface INavbarProps {
   isLoggedIn: boolean;
-  isUserAdmin:boolean;
+  isUserAdmin: boolean;
   userFullName: string;
 }
 
@@ -104,13 +104,16 @@ const Navbar: FunctionComponent<INavbarProps> = (props) => {
             ) : (
               <>
                 <li className="nav-item mx-lg-2 my-lg-0 my-sm-2">
-                  <Link to={"/signIn"} className="btn btn-secondary">
-                    Sign In
+                  <Link to={"/signIn"} className="btn btn-btn-outline-primary py-2 px-4">
+                    SIGN IN
                   </Link>
                 </li>
                 <li className="nav-item">
-                  <Link to={"/register"} className="btn btn-secondary">
-                    Register
+                  <Link
+                    to={"/register"}
+                    className="btn btn-primary py-2 px-4"
+                  >
+                    REGISTER
                   </Link>
                 </li>
               </>

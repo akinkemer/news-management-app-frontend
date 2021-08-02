@@ -14,7 +14,9 @@ function AnnouncementsPage() {
       delay={0.1}
       duration={0.6}
     >
-      <h1>announcements</h1>
+      <div className="container">
+        <h1>announcements</h1>
+      </div>
     </Animate>
   );
 }

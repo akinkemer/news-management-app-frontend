@@ -26,8 +26,6 @@ function RegisterPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  //const [registerFailedMessage, setRegisterFailedMessage] = useState("");
-
   const [isFirstVisit, setIsFirstVisit] = useState(true);
   const [isUserNameValid, setIsUserNameValid] = useState(false);
   const [isPasswordValid, setIsPasswordValid] = useState(false);
@@ -118,7 +116,7 @@ function RegisterPage() {
       delay={0.1}
       duration={0.6}
     >
-      <div>
+      <div className="container">
         <div className="row">
           <div className="col-12">
             <h1 className="text-center mt-5">Let's Create Your Account</h1>
