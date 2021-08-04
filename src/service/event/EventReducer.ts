@@ -6,7 +6,10 @@ const initalState: Types.State = {
   isLoading: false,
   message: "",
 };
-const reducer = (state: Types.State = initalState, action: Types.Action):Types.State => {
+const reducer = (
+  state: Types.State = initalState,
+  action: Types.Action
+): Types.State => {
   switch (action.type) {
     case "getNews":
       return { ...state, news: action.payload };
@@ -41,10 +44,13 @@ const reducer = (state: Types.State = initalState, action: Types.Action):Types.S
     case "createAnnouncement":
       return {
         ...state,
-        announcements: [...state.announcements,action.payload],
+        announcements: [...state.announcements, action.payload],
       };
+    case "addAnnouncFromSocket":
+      return {...state,
+        announcements: [...state.announcements, action.payload]};
     case "createNews":
-      return { ...state, news:[ ...state.news,action.payload] };
+      return { ...state, news: [...state.news, action.payload] };
     case "start":
       return { ...state, isLoading: true, message: "" };
     case "success":

@@ -81,6 +81,10 @@ export interface ActionCreateNews {
   type: "createNews";
   payload: News;
 }
+export interface ActionAddAnnouncFromSocket {
+  type: "addAnnouncFromSocket";
+  payload: Announcement;
+}
 
 export interface ImageSavedResponse {
   data: {
@@ -123,4 +127,5 @@ export type Action =
   | ActionUpdateAnnouncement
   | ActionUpdateNews
   | ActionCreateAnnouncement
-  | ActionCreateNews;
+  | ActionCreateNews
+  |ActionAddAnnouncFromSocket;

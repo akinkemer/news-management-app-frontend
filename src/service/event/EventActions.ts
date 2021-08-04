@@ -94,10 +94,70 @@ export const updateAnnouncement = (
         console.log(response.data);
       })
       .catch((error) => {
-        console.log(error)
+        console.log(error);
       });
   };
 };
+
+export const getNews = () => {
+  return (dispatch: Dispatch<Types.Action>) => {
+    dispatch(actionStart());
+    axiosJSON
+      .get<{ data: Types.News[] }>("/news/getAll")
+      .then((response) => {
+        dispatch(actionGetNews(response.data.data));
+        dispatch(actionSuccess("News fetched successfully"));
+      })
+      .catch((error) => {
+        console.log(error);
+        dispatch(actionFailed("Failed to fetch news"));
+      });
+  };
+};
+export const createNews = (createNewsForm: Types.CreateNewsForm) => {
+  return (dispatch: Dispatch<Types.Action>) => {
+    dispatch(actionStart());
+
+    axiosJSON
+      .post<Types.NewsSavedResponse>("/news/save", createNewsForm)
+      .then((response) => {
+        dispatch(actionCreateNews(response.data.data));
+        dispatch(actionSuccess("Success"));
+      })
+      .catch(() => {
+        dispatch(actionFailed("Failed to create news"));
+      });
+  };
+};
+export const deleteNews = (id: number) => {
+  return (dispatch: Dispatch<Types.Action>) => {
+    axiosJSON
+      .delete("/news/delete/" + id)
+      .then(() => {
+        dispatch(actionDeleteNews(id));
+        dispatch(actionSuccess("News deleted successfully"));
+      })
+      .catch(() => {
+        dispatch(actionFailed("Failed to delete news"));
+      });
+  };
+};
+export const updateNews = (news: Types.News) => {
+  return (dispatch: Dispatch<Types.Action>) => {
+    dispatch(actionStart());
+    axiosJSON
+      .put<Types.News>(`/news/update/${news.id}`, news)
+      .then((response) => {
+        dispatch(actionUpdateNews(news));
+        dispatch(actionSuccess("Success to delete news"));
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+};
+
 
 const actionStart = (): Types.Action => {
   return { type: "start" };
@@ -122,6 +182,21 @@ const actionGetAnnouns = (
 const actionDeleteAnnounc = (id: number): Types.Action => {
   return { type: "deleteAnnouncement", payload: id };
 };
-const actionUpdateAnnounc = (announc:Types.Announcement): Types.Action => {
+const actionUpdateAnnounc = (announc: Types.Announcement): Types.Action => {
   return { type: "updateAnnouncement", payload: announc };
 };
+const actionGetNews = (news: Types.News[]): Types.Action => {
+  return { type: "getNews", payload: news };
+};
+
+const actionCreateNews = (news: Types.News): Types.Action => {
+  return { type: "createNews", payload: news };
+};
+
+const actionDeleteNews = (id: number): Types.Action => {
+  return { type: "deleteNews", payload: id };
+};
+const actionUpdateNews = (news: Types.News): Types.Action => {
+  return { type: "updateNews", payload: news };
+};
+
